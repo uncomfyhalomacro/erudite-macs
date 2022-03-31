@@ -54,6 +54,7 @@
   (setq lsp-sh-enable t)
   :hook
   (sh-mode . lsp-sh-enable))
+
 ;; Julia
 (use-package julia-snail
     :hook (julia-mode . julia-snail-mode))
