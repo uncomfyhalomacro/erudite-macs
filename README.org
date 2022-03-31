@@ -1,11 +1,12 @@
 #+TITLE: erudite-macs
 #+AUTHOR: uncomfyhalomacro
-
+#+ATTR_ORG: :radio t
 
 An emacs config for Julia users.
 
-* TODO Some stuff that needs to be done [0/3]
+* TODO Some stuff that needs to be done [0/4]
   - [ ] User-defined keymaps, soon™️
   - [ ] Julia-repl? or julia-snail? both work but I kinda do not like
     julia-snail's but im fine with it
   - [ ] Split-up .el files
+  - [ ] Setup org mode for note-taking
