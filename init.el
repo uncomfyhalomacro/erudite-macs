@@ -20,6 +20,7 @@
 ;; Integrate straight with use-package
 (straight-use-package 'use-package)
 (setq straight-use-package-by-default t)
+
 ;; Install the following packages that I need
 (straight-use-package 'ayu-theme)
 (use-package evil
@@ -37,10 +38,15 @@
 ;; Load packages
 (require 'ayu-theme)
 (require 'elcord)
+(use-package flycheck
+  :straight t
+  :init (global-flycheck-mode))
 (elcord-mode 1)
 (company-mode)
 (add-hook 'after-init-hook 'global-company-mode)
 (use-package magit)
+
+;; Julia
 (use-package julia-snail
     :hook (julia-mode . julia-snail-mode))
 (use-package lsp-julia
@@ -49,6 +55,15 @@
   (setq lsp-julia-flags `("-J/home/uncomfy/.julia/environments/emacs-lspconfig/languageserver.so"))
   :config
   (setq lsp-julia-default-environment "~/.julia/environments/emacs-lspconfig"))
+
+;; Rust
+(use-package rust-mode
+  :straight t)
+(use-package rustic
+  :straight t
+  :config (setq rustic-analyzer-command '("/usr/local/bin/rust-analyzer")))
+
+
 (use-package lsp-mode
   :init
   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
@@ -56,6 +71,7 @@
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
 
 	 (julia-mode . lsp)
+	 (rust-mode . lsp)
 	 ;; if you want which-key integration
 	 (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp)
@@ -63,15 +79,17 @@
 
 (use-package lsp-ui
   :init
-  (setq lsp-ui-sideline-enable t)
-  (setq lsp-ui-sideline-show-code-actions t)
-  (setq lsp-ui-sideline-show-diagnostics t)
-  (setq lsp-signature-auto-activate nil)
-  (setq lsp-signature-render-documentation nil)
-  (setq lsp-ui-doc-show-with-cursor t)
-  (setq lsp-eldoc-enable-hover nil)
-  (setq lsp-completion-show-detail t)
-  (setq lsp-completion-show-kind t)
+  (setq lsp-ui-sideline-enable nil
+	lsp-ui-sideline-show-code-actions t
+	lsp-ui-sideline-show-diagnostics t
+	lsp-signature-auto-activate nil
+	lsp-signature-render-documentation nil
+	lsp-ui-doc-show-with-cursor t
+	lsp-eldoc-enable-hover nil
+	lsp-completion-show-detail t
+	lsp-completion-show-kind t
+	lsp-ui-doc-position 'at-point
+	lsp-ui-doc-enable t)
   :commands lsp-ui-mode)
 ;; if you are helm user
 (use-package helm-lsp :commands helm-lsp-workspace-symbol)
@@ -98,7 +116,7 @@
 
 
 ;; Themes
-(load-theme 'gruvbox-dark-hard t)
+(load-theme 'gruvbox-light-hard t)
 
 ;; User defined keymaps
 ;;;; Org-Mode
