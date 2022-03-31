@@ -75,7 +75,6 @@
 (use-package treemacs
   :straight t
   :config
-  
   (treemacs-follow-mode 1)
   (treemacs-project-follow-mode 1)
   )
@@ -90,6 +89,7 @@
 	 (julia-mode . lsp)
 	 (rust-mode . lsp)
 	 (sh-mode . lsp)
+
 	 ;; if you want which-key integration
 	 (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp)
@@ -144,38 +144,3 @@
 (global-set-key (kbd "C-c l") #'org-store-link)
 (global-set-key (kbd "C-c a") #'org-agenda)
 (global-set-key (kbd "C-c c") #'org-capture)
-
-;; Window Layout
-
-
-;; (defvar parameters
-;;   '(window-parameters . ((no-other-window . t)
-;;                          (no-delete-other-windows . t))))
-
-;; (setq fit-window-to-buffer-horizontally t)
-;; (setq window-resize-pixelwise t)
-
-;; (setq
-;;  display-buffer-alist
-;;  `(("\\*Buffer List\\*" display-buffer-in-side-window
-;;     (side . top) (slot . 0) (window-height . fit-window-to-buffer)
-;;     (preserve-size . (nil . t)) ,parameters)
-;;    ("\\*Tags List\\*" display-buffer-in-side-window
-;;     (side . right) (slot . 0) (window-width . fit-window-to-buffer)
-;;     (preserve-size . (t . nil)) ,parameters)
-;;    ("\\*\\(?:help\\|grep\\|Completions\\)\\*"
-;;     display-buffer-in-side-window
-;;     (side . bottom) (slot . -1) (preserve-size . (nil . t))
-;;     ,parameters)
-;;    ("\\*\\(?:shell\\|compilation\\)\\*" display-buffer-in-side-window
-;;     (side . bottom) (slot . 1) (preserve-size . (nil . t))
-;;     ,parameters)))
-;; (defun dired-default-directory-on-left ()
-;;   "Display `default-directory' in side window on left, hiding details."
-;;   (interactive)
-;;   (let ((buffer (dired-noselect default-directory)))
-;;     (with-current-buffer buffer (dired-hide-details-mode t))
-;;     (display-buffer-in-side-window
-;;      buffer `((side . left) (slot . 0)
-;;               (window-width . fit-window-to-buffer)
-;;               (preserve-size . (t . nil)) ,parameters))))
