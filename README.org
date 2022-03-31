@@ -1,14 +1,11 @@
-* erudite-macs
-  :PROPERTIES:
-  :CUSTOM_ID: erudite-macs
-  :END:
+#+TITLE: erudite-macs
+#+AUTHOR: uncomfyhalomacro
+
+
 An emacs config for Julia users.
 
-** TODO
-   :PROPERTIES:
-   :CUSTOM_ID: todo
-   :END:
-- [ ] User-defined keymaps, soon™️
-- [ ] Julia-repl? or julia-snail? both work but I kinda do not like
-  julia-snail's but im fine with it
-- [ ] Split-up .el files
+* TODO Some stuff that needs to be done [0/3]
+  - [ ] User-defined keymaps, soon™️
+  - [ ] Julia-repl? or julia-snail? both work but I kinda do not like
+    julia-snail's but im fine with it
+  - [ ] Split-up .el files
