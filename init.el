@@ -1,6 +1,4 @@
 (setq inhibit-startup-message t)
-(tool-bar-mode -1)
-(set-fringe-mode 10)
 
 (menu-bar-mode -1)
 
