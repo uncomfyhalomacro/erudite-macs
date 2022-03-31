@@ -33,6 +33,7 @@
 (straight-use-package 'gruvbox-theme)
 (straight-use-package 'lsp-mode)
 (straight-use-package 'company)
+
 ;; Load packages
 (require 'ayu-theme)
 (require 'elcord)
@@ -98,3 +99,10 @@
 
 ;; Themes
 (load-theme 'gruvbox-dark-hard t)
+
+;; User defined keymaps
+;;;; Org-Mode
+
+(global-set-key (kbd "C-c l") #'org-store-link)
+(global-set-key (kbd "C-c a") #'org-agenda)
+(global-set-key (kbd "C-c c") #'org-capture)
