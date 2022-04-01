@@ -1,6 +1,3 @@
-;;;; erudite --- Summary
-;;;; Commentary:
-;; Built-in emacs settings
 (setq inhibit-startup-message t)
 (xterm-mouse-mode t)
 (menu-bar-mode -1)
@@ -23,7 +20,6 @@
 (straight-use-package 'use-package)
 (setq straight-use-package-by-default t)
 
-;; Install the following packages that I need
 (straight-use-package 'ayu-theme)
 (use-package evil
   :straight t
@@ -33,6 +29,8 @@
 (straight-use-package 'elcord)
 (use-package vterm
   :straight t)
+(use-package toc-org
+  :straight t) 
 (straight-use-package 'gruvbox-theme)
 (straight-use-package 'lsp-mode)
 (straight-use-package 'company)
