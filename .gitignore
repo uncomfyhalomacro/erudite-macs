@@ -5,6 +5,5 @@ eln-cache
 *~
 .*-session-*
 transient/
-.daps*/
-.daps-*
+.dap*
 .cache/
