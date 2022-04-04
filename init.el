@@ -31,7 +31,13 @@
 (use-package vterm
   :straight t)
 (use-package toc-org
-  :straight t) 
+  :straight t)
+(use-package org-auto-tangle
+  :after toc-org
+  :defer t
+  :straight t
+  :config
+  :hook (org-mode . org-auto-tangle-mode))
 (straight-use-package 'gruvbox-theme)
 (straight-use-package 'lsp-mode)
 (straight-use-package 'company)
@@ -45,7 +51,9 @@
 (elcord-mode 1)
 (company-mode)
 (add-hook 'after-init-hook 'global-company-mode)
-(use-package magit)
+(use-package magit
+  :defer t
+)
 
 ;; Shell
 (use-package lsp-sh
@@ -116,7 +124,8 @@
 (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
 ;; optionally if you want to use debugger
 (use-package dap-mode)
-;; (use-package dap-LANGUAGE) to load the dap adapter for your language
+;; dap-julia has not yet been implemented
+
 
 ;; optional if you want which-key integration
 (use-package which-key
