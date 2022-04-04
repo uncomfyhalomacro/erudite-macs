@@ -15,6 +15,7 @@
 	 'silent 'inhibit-cookies)
       (goto-char (point-max))
       (eval-print-last-sexp)))
+
   (load bootstrap-file nil 'nomessage))
 
 ;; Integrate straight with use-package
@@ -30,6 +31,16 @@
 (straight-use-package 'elcord)
 (use-package vterm
   :straight t)
+(use-package all-the-icons
+  :straight t
+)
+(use-package neotree
+  :straight t
+  :after all-the-icons
+  :init
+  (setq neo-theme (if (display-graphic-p) 'icons 'nerd))
+  :config 
+   (global-set-key [f8] 'neotree-toggle))
 (use-package toc-org
   :straight t)
 (use-package org-auto-tangle
@@ -84,7 +95,7 @@
   :config
   (treemacs-follow-mode 1)
   (treemacs-project-follow-mode 1)
-  )
+)
 
 
 (use-package lsp-mode
