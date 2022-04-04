@@ -31,27 +31,28 @@
   These includes an initial customized settings plus bootstrapping of `straight.el`.
   
   #+begin_src elisp
-  (setq inhibit-startup-message t)
-  (xterm-mouse-mode t)
-  (menu-bar-mode -1)
-  (setq visible-bell t)
-  ;; Use straight.el bootstrap script
-  (defvar bootstrap-version)
-  (let ((bootstrap-file
-	 (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-	(bootstrap-version 5))
-    (unless (file-exists-p bootstrap-file)
-      (with-current-buffer
-	  (url-retrieve-synchronously
-	   "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-	   'silent 'inhibit-cookies)
-	(goto-char (point-max))
-	(eval-print-last-sexp)))
-    (load bootstrap-file nil 'nomessage))
+    (setq inhibit-startup-message t)
+    (set-frame-font "JuliaMono 13" nil t)
+    (xterm-mouse-mode t)
+    (menu-bar-mode -1)
+    (setq visible-bell t)
+    ;; Use straight.el bootstrap script
+    (defvar bootstrap-version)
+    (let ((bootstrap-file
+	   (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+	  (bootstrap-version 5))
+      (unless (file-exists-p bootstrap-file)
+	(with-current-buffer
+	    (url-retrieve-synchronously
+	     "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+	     'silent 'inhibit-cookies)
+	  (goto-char (point-max))
+	  (eval-print-last-sexp)))
+      (load bootstrap-file nil 'nomessage))
 
-  ;; Integrate straight with use-package
-  (straight-use-package 'use-package)
-  (setq straight-use-package-by-default t)
+    ;; Integrate straight with use-package
+    (straight-use-package 'use-package)
+    (setq straight-use-package-by-default t)
 
   #+end_src
 
@@ -135,7 +136,8 @@
 
     (use-package lsp-ui
       :init
-      (setq lsp-ui-sideline-enable nil
+      (setq lsp-ui-sideline-enable t
+	    lsp-ui-doc-border "#BDAE93"
 	    lsp-ui-sideline-show-code-actions t
 	    lsp-ui-sideline-show-diagnostics t
 	    lsp-signature-auto-activate nil

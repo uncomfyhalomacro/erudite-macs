@@ -1,4 +1,5 @@
 (setq inhibit-startup-message t)
+(set-frame-font "JuliaMono 13" nil t)
 (xterm-mouse-mode t)
 (menu-bar-mode -1)
 (setq visible-bell t)
@@ -95,7 +96,8 @@
 
 (use-package lsp-ui
   :init
-  (setq lsp-ui-sideline-enable nil
+  (setq lsp-ui-sideline-enable t
+	lsp-ui-doc-border "#BDAE93"
 	lsp-ui-sideline-show-code-actions t
 	lsp-ui-sideline-show-diagnostics t
 	lsp-signature-auto-activate nil
