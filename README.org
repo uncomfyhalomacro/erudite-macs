@@ -17,10 +17,9 @@
   org-mode's source code block's feature with this README.org file. I heard
   it generates the code for you as a file from the source completions
 
-* TODO Some stuff that needs to be done [0/4]
+* TODO Some stuff that needs to be done [1/4]
   - [ ] User-defined keymaps, soon™️
-  - [ ] Julia-repl? or julia-snail? both work but I kinda do not like
-    julia-snail's but im fine with it
+  - [X] Julia-repl is chosen.
   - [ ] Split-up .el files
   - [ ] Setup org mode for note-taking
 
@@ -113,8 +112,13 @@
       (sh-mode . lsp-sh-enable))
 
     ;; Julia
-    (use-package julia-snail
-	:hook (julia-mode . julia-snail-mode))
+    (use-package julia-repl
+       :straight t
+       :hook (
+	  (julia-mode . julia-repl-mode))
+       :config
+          (julia-repl-set-terminal-backend 'vterm)
+    )
     (use-package lsp-julia
       :init
       (setq lsp-julia-package-dir nil)

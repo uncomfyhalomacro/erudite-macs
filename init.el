@@ -74,8 +74,13 @@
   (sh-mode . lsp-sh-enable))
 
 ;; Julia
-(use-package julia-snail
-    :hook (julia-mode . julia-snail-mode))
+(use-package julia-repl
+   :straight t
+   :hook (
+      (julia-mode . julia-repl-mode))
+   :config
+      (julia-repl-set-terminal-backend 'vterm)
+)
 (use-package lsp-julia
   :init
   (setq lsp-julia-package-dir nil)
