@@ -1,5 +1,5 @@
 (setq inhibit-startup-message t)
-(set-frame-font "JuliaMono 13" nil t)
+(set-frame-font "JuliaMono 10" nil t)
 (xterm-mouse-mode t)
 (menu-bar-mode -1)
 (setq visible-bell t)
