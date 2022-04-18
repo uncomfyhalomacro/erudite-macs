@@ -7,3 +7,5 @@ eln-cache
 transient/
 .dap*
 .cache/
+recentf
+projectile-bookmarks.eld

@@ -24,6 +24,17 @@
 
 (straight-use-package 'ayu-theme)
 (straight-use-package 'catppuccin-theme)
+(use-package page-break-lines
+  :config
+  (page-break-lines-mode))
+(use-package projectile
+  :config
+  (projectile-mode +1)
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
+(use-package dashboard
+  :straight t
+  :config
+  (dashboard-setup-startup-hook))
 (use-package evil
   :straight t
   :config
