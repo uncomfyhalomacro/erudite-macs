@@ -91,7 +91,7 @@
 			  "--startup-file=no"
 			  "--history-file=no"
 			  ,(concat "-J" (getenv "HOME") "/.julia/environments/emacs-lspconfig/languageserver.so"))
-	lsp-julia-default-environment "~/.julia/environments/v1.7"))
+	lsp-julia-default-environment (shell-command-to-string "julia --startup-file=no --history-file=no -e 'print(dirname(Base.active_project()))'")))
 
 ;; Rust
 (use-package rust-mode
