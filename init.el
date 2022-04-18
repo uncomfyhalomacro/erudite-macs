@@ -90,7 +90,7 @@
 	lsp-julia-flags `(,(concat "--project=" lsp-julia-package-dir)
 			  "--startup-file=no"
 			  "--history-file=no"
-			  "-J/home/uncomfy/.julia/environments/emacs-lspconfig/languageserver.so")
+			  ,(concat "-J" (getenv "HOME") "/.julia/environments/emacs-lspconfig/languageserver.so"))
 	lsp-julia-default-environment "~/.julia/environments/v1.7"))
 
 ;; Rust
