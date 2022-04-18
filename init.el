@@ -23,6 +23,7 @@
 (setq straight-use-package-by-default t)
 
 (straight-use-package 'ayu-theme)
+(straight-use-package 'catppuccin-theme)
 (use-package evil
   :straight t
   :config
@@ -33,14 +34,14 @@
   :straight t)
 (use-package all-the-icons
   :straight t
-)
+  )
 (use-package neotree
   :straight t
   :after all-the-icons
   :init
   (setq neo-theme (if (display-graphic-p) 'icons 'nerd))
   :config 
-   (global-set-key [f8] 'neotree-toggle))
+  (global-set-key [f8] 'neotree-toggle))
 (use-package toc-org
   :straight t)
 (use-package org-auto-tangle
@@ -64,7 +65,7 @@
 (add-hook 'after-init-hook 'global-company-mode)
 (use-package magit
   :defer t
-)
+  )
 
 ;; Shell
 (use-package lsp-sh
@@ -75,18 +76,22 @@
 
 ;; Julia
 (use-package julia-repl
-   :straight t
-   :hook (
-      (julia-mode . julia-repl-mode))
-   :config
-      (julia-repl-set-terminal-backend 'vterm)
-)
-(use-package lsp-julia
-  :init
-  (setq lsp-julia-package-dir nil)
-  (setq lsp-julia-flags `("-J/home/uncomfy/.julia/environments/emacs-lspconfig/languageserver.so"))
+  :straight t
+  :hook (
+	 (julia-mode . julia-repl-mode))
   :config
-  (setq lsp-julia-default-environment "~/.julia/environments/emacs-lspconfig"))
+  (julia-repl-set-terminal-backend 'vterm)
+  )
+(use-package lsp-julia
+  :config
+  (setq
+	lsp-julia-command "julia"
+	lsp-julia-package-dir "@emacs-lspconfig"
+	lsp-julia-flags `(,(concat "--project=" lsp-julia-package-dir)
+			  "--startup-file=no"
+			  "--history-file=no"
+			  "-J/home/uncomfy/.julia/environments/emacs-lspconfig/languageserver.so")
+	lsp-julia-default-environment "~/.julia/environments/v1.7"))
 
 ;; Rust
 (use-package rust-mode
@@ -100,7 +105,7 @@
   :config
   (treemacs-follow-mode 1)
   (treemacs-project-follow-mode 1)
-)
+  )
 
 
 (use-package lsp-mode
@@ -158,13 +163,14 @@
 (require 'tree-sitter-langs)
 (require 'tree-sitter-debug)
 (require 'tree-sitter-query)
-
+(global-tree-sitter-mode)
+(add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode)
 
 ;; Themes
-(load-theme 'gruvbox-light-hard t)
+(load-theme 'catppuccin t)
 
 ;; User defined keymaps
-;;;; Org-Mode
+		    ;;;; Org-Mode
 
 (global-set-key (kbd "C-c l") #'org-store-link)
 (global-set-key (kbd "C-c a") #'org-agenda)
