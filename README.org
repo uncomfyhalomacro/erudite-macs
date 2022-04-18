@@ -13,9 +13,7 @@
 * Summary
   I am currently learning how to use emacs so this config might be messy
   and somewhat not to your liking. I am configuring this config for note-taking,
-  journaling, and coding for haskell, julia, and rust. I am planning to experiment
-  org-mode's source code block's feature with this README.org file. I heard
-  it generates the code for you as a file from the source completions
+  journaling, and coding for haskell, julia, and rust. When done editing the config, do `C-c C-v t` to tangle.
 
 * TODO Some stuff that needs to be done [1/4]
   - [ ] User-defined keymaps, soon™️
