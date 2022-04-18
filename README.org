@@ -55,8 +55,7 @@
     (setq straight-use-package-by-default t)
   #+end_src
 
-*
-Main configurations
+* Main configurations
   We call straight to install our packages. We also use use-package which is already integrated to straight
   from the previous configuration. I will be splitting these up one day but not now.
 
