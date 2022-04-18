@@ -2,6 +2,7 @@
 #+AUTHOR: uncomfyhalomacro
 #+ATTR_ORG: :radio t
 #+PROPERTY: header-args :tangle init.el
+#+AUTO_TANGLE: t
 
 * Table of Contents :TOC:
 - [[#summary][Summary]]
