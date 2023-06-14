@@ -1,9 +1,19 @@
 (setq inhibit-startup-message t)
-(set-frame-font "JuliaMono 10" nil t)
-(xterm-mouse-mode t)
-(menu-bar-mode -1)
-(setq visible-bell t)
-;; Use straight.el bootstrap script
+    (set-face-attribute 'default nil :font "JuliaMono 14")
+    (set-fontset-font t nil "Symbols Nerd Font" nil 'append)
+    (set-fontset-font t nil "Noto Sans Symbols" nil 'append)
+    (set-fontset-font t nil "Noto Sans Symbols2" nil 'append)
+    (set-fontset-font t nil "Noto Sans CJK SC" nil 'append)
+    (set-fontset-font t nil "Noto Sans CJK TC" nil 'append)
+
+    (set-fontset-font t nil "Noto Sans CJK KR" nil 'append)
+    (set-fontset-font t nil "Noto Sans CJK JP" nil 'append)
+    (set-fontset-font t nil "Noto Sans CJK HK" nil 'append)
+    (set-fontset-font t nil "Noto Color Emoji" nil 'append)
+    (xterm-mouse-mode t)
+    (menu-bar-mode -1)
+    (setq visible-bell t)
+    ;; Use straight.el bootstrap script
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
@@ -15,12 +25,10 @@
 	 'silent 'inhibit-cookies)
       (goto-char (point-max))
       (eval-print-last-sexp)))
-
   (load bootstrap-file nil 'nomessage))
-
-;; Integrate straight with use-package
-(straight-use-package 'use-package)
-(setq straight-use-package-by-default t)
+    ;; Integrate straight with use-package
+    (straight-use-package 'use-package)
+    (setq straight-use-package-by-default t)
 
 (straight-use-package 'ayu-theme)
 (straight-use-package 'catppuccin-theme)
@@ -45,12 +53,12 @@
   :straight t)
 (use-package all-the-icons
   :straight t
-  )
+ )
 (use-package neotree
   :straight t
   :after all-the-icons
   :init
-  (setq neo-theme (if (display-graphic-p) 'icons 'nerd))
+  (setq neo-theme (if (display-graphic-p) 'icons 'classic))
   :config 
   (global-set-key [f8] 'neotree-toggle))
 (use-package toc-org
@@ -101,15 +109,16 @@
 	lsp-julia-flags `(,(concat "--project=" lsp-julia-package-dir)
 			  "--startup-file=no"
 			  "--history-file=no"
-			  ,(concat "-J" (getenv "HOME") "/.julia/environments/emacs-lspconfig/languageserver.so"))
-	lsp-julia-default-environment (shell-command-to-string "julia --startup-file=no --history-file=no -e 'print(dirname(Base.active_project()))'")))
+			  ,(concat "-J" (shell-command-to-string "julia --startup-file=no --history-file=no -e 'print(homedir())'") "/.julia/environments/emacs-lspconfig/languageserver.so"))
+	lsp-julia-default-environment (string-trim(shell-command-to-string "julia --startup-file=no --history-file=no -e 'print(dirname(Base.active_project()))'"))))
 
 ;; Rust
 (use-package rust-mode
   :straight t)
 (use-package rustic
   :straight t
-  :config (setq rustic-analyzer-command '("/usr/local/bin/rust-analyzer")))
+  :config
+  (setq rustic-analyzer-command '("rust-analyzer")))
 
 (use-package treemacs
   :straight t
@@ -149,9 +158,15 @@
 	lsp-ui-doc-position 'at-point
 	lsp-ui-doc-enable t)
   :commands lsp-ui-mode)
-;; if you are helm user
-(use-package helm-lsp :commands helm-lsp-workspace-symbol)
 ;; if you are ivy user
+(use-package all-the-icons-ivy
+  :straight t
+  :init (add-hook 'after-init-hook 'all-the-icons-ivy-setup))
+(use-package all-the-icons-dired
+  :straight t
+  :init
+  (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
+ )
 (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
 (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
 ;; optionally if you want to use debugger
