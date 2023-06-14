@@ -1,34 +1,33 @@
 (setq inhibit-startup-message t)
-    (set-face-attribute 'default nil :font "JuliaMono 14")
-    (set-fontset-font t nil "Symbols Nerd Font" nil 'append)
-    (set-fontset-font t nil "Noto Sans Symbols" nil 'append)
-    (set-fontset-font t nil "Noto Sans Symbols2" nil 'append)
-    (set-fontset-font t nil "Noto Sans CJK SC" nil 'append)
-    (set-fontset-font t nil "Noto Sans CJK TC" nil 'append)
-
-    (set-fontset-font t nil "Noto Sans CJK KR" nil 'append)
-    (set-fontset-font t nil "Noto Sans CJK JP" nil 'append)
-    (set-fontset-font t nil "Noto Sans CJK HK" nil 'append)
-    (set-fontset-font t nil "Noto Color Emoji" nil 'append)
-    (xterm-mouse-mode t)
-    (menu-bar-mode -1)
-    (setq visible-bell t)
-    ;; Use straight.el bootstrap script
+(set-face-attribute 'default nil :font "JuliaMono 10")
+(set-fontset-font t nil "Symbols Nerd Font" nil 'append)
+(set-fontset-font t nil "Noto Sans Symbols" nil 'append)
+(set-fontset-font t nil "Noto Sans Symbols2" nil 'append)
+(set-fontset-font t nil "Noto Sans CJK SC" nil 'append)
+(set-fontset-font t nil "Noto Sans CJK TC" nil 'append)
+(set-fontset-font t nil "Noto Sans CJK KR" nil 'append)
+(set-fontset-font t nil "Noto Sans CJK JP" nil 'append)
+(set-fontset-font t nil "Noto Sans CJK HK" nil 'append)
+(set-fontset-font t nil "Noto Color Emoji" nil 'append)
+(setq next-line-add-newlines t)
+(xterm-mouse-mode t)
+(menu-bar-mode -1)
+(setq visible-bell t)
+;; Use straight.el bootstrap script
 (defvar bootstrap-version)
 (let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-      (bootstrap-version 5))
-  (unless (file-exists-p bootstrap-file)
-    (with-current-buffer
-	(url-retrieve-synchronously
-	 "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-	 'silent 'inhibit-cookies)
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage))
-    ;; Integrate straight with use-package
-    (straight-use-package 'use-package)
-    (setq straight-use-package-by-default t)
+(expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+(bootstrap-version 5))
+(unless (file-exists-p bootstrap-file)
+(with-current-buffer
+(url-retrieve-synchronously "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+'silent 'inhibit-cookies)
+(goto-char (point-max))
+(eval-print-last-sexp)))
+(load bootstrap-file nil 'nomessage))
+;; Integrate straight with use-package
+(straight-use-package 'use-package)
+(setq straight-use-package-by-default t)
 
 (straight-use-package 'ayu-theme)
 (straight-use-package 'catppuccin-theme)
@@ -52,8 +51,7 @@
 (use-package vterm
   :straight t)
 (use-package all-the-icons
-  :straight t
- )
+  :straight t)
 (use-package neotree
   :straight t
   :after all-the-icons
@@ -104,13 +102,13 @@
 (use-package lsp-julia
   :config
   (setq
-	lsp-julia-command "julia"
-	lsp-julia-package-dir "@emacs-lspconfig"
-	lsp-julia-flags `(,(concat "--project=" lsp-julia-package-dir)
-			  "--startup-file=no"
-			  "--history-file=no"
-			  ,(concat "-J" (shell-command-to-string "julia --startup-file=no --history-file=no -e 'print(homedir())'") "/.julia/environments/emacs-lspconfig/languageserver.so"))
-	lsp-julia-default-environment (string-trim(shell-command-to-string "julia --startup-file=no --history-file=no -e 'print(dirname(Base.active_project()))'"))))
+   lsp-julia-command "julia"
+   lsp-julia-package-dir "@emacs-lspconfig"
+   lsp-julia-flags `(,(concat "--project=" lsp-julia-package-dir)
+		     "--startup-file=no"
+		     "--history-file=no"
+		     ,(concat "-J" (shell-command-to-string "julia --startup-file=no --history-file=no -e 'print(homedir())'") "/.julia/environments/emacs-lspconfig/languageserver.so"))
+   lsp-julia-default-environment (string-trim(shell-command-to-string "julia --startup-file=no --history-file=no -e 'print(dirname(Base.active_project()))'"))))
 
 ;; Rust
 (use-package rust-mode
@@ -166,7 +164,7 @@
   :straight t
   :init
   (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
- )
+  )
 (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
 (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
 ;; optionally if you want to use debugger
@@ -196,10 +194,17 @@
 (load-theme 'catppuccin t)
 
 ;; User defined keymaps
-		    ;;;; Org-Mode
+			;;;; Org-Mode
 
 (global-set-key (kbd "C-c l") #'org-store-link)
 (global-set-key (kbd "C-c a") #'org-agenda)
 (global-set-key (kbd "C-c c") #'org-capture)
 (global-set-key (kbd "C-c ;") #'comment-line)
 (global-set-key (kbd "C-c C-;") #'comment-region)
+
+(defun indent-org-block-automatically ()
+  (when (org-in-src-block-p)
+    (org-edit-special)
+    (indent-region (point-min) (point))
+    (org-edit-src-exit)))
+(run-at-time 1 10 'indent-org-block-automatically)
