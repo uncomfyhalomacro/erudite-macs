@@ -1,7 +1,6 @@
 #+AUTHOR: uncomfyhalomacro
 #+TITLE: erudite-macs
 #+ATTR_ORG: :radio t
-#+PROPERTY: header-args :tangle init.el
 #+AUTO_TANGLE: t
 
 <2023-06-15 Thu 19:06>
@@ -28,11 +27,10 @@
 * Emacs Config
   These are the configuration code in elisp for my emacs config.
 
-* Starter
-settings
+* Starter settings
   These includes an initial customized settings plus bootstrapping of `straight.el`.
   
-#+begin_src elisp
+#+begin_src elisp :tangle init.el
   (setq inhibit-startup-message t)
   (set-face-attribute 'default nil :font "JuliaMono 10")
   (set-fontset-font t nil "Symbols Nerd Font" nil 'append)
@@ -44,33 +42,43 @@ settings
   (set-fontset-font t nil "Noto Sans CJK JP" nil 'append)
   (set-fontset-font t nil "Noto Sans CJK HK" nil 'append)
   (set-fontset-font t nil "Noto Color Emoji" nil 'append)
+  (global-display-line-numbers-mode 'relative)
+  (setq display-line-numbers-type 'relative)
+
   (setq next-line-add-newlines t)
+
   (xterm-mouse-mode t)
+
   (menu-bar-mode -1)
+
   (setq visible-bell t)
+
   ;; Use straight.el bootstrap script
+
   (defvar bootstrap-version)
   (let ((bootstrap-file
-  (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-  (bootstrap-version 5))
-  (unless (file-exists-p bootstrap-file)
-  (with-current-buffer
-  (url-retrieve-synchronously "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-  'silent 'inhibit-cookies)
-  (goto-char (point-max))
-  (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage))
+	 (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+	(bootstrap-version 5))
+    (unless (file-exists-p bootstrap-file)
+      (with-current-buffer
+	  (url-retrieve-synchronously "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+				      'silent 'inhibit-cookies)
+	(goto-char (point-max))
+	(eval-print-last-sexp)))
+    (load bootstrap-file nil 'nomessage))
   ;; Integrate straight with use-package
   (straight-use-package 'use-package)
   (setq straight-use-package-by-default t)
-  #+end_src
+  (load-file "~/.config/emacs/config.el")
+  (load-file "~/.config/emacs/keymaps.el")
+#+end_src
 
 * Main configurations
 
   We call straight to install our packages. We also use use-package which is already integrated to straight
   from the previous configuration. I will be splitting these up one day but not now.
 
-#+begin_src elisp
+#+begin_src elisp :tangle config.el
   (straight-use-package 'ayu-theme)
   (straight-use-package 'catppuccin-theme)
   (use-package page-break-lines
@@ -234,9 +242,20 @@ settings
 
   ;; Themes
   (load-theme 'catppuccin t)
+  (defun indent-org-block-automatically ()
+    (when (org-in-src-block-p)
+      (org-edit-special)
+      (indent-region (point-min) (point))
+      (org-edit-src-exit)))
+  (run-at-time 1 10 'indent-org-block-automatically)
 
+#+end_src
+
+** Keymappings
+
+#+begin_src elisp :tangle keymaps.el
   ;; User defined keymaps
-			  ;;;; Org-Mode
+  ;;;; Org-Mode
 
   (global-set-key (kbd "C-c l") #'org-store-link)
   (global-set-key (kbd "C-c a") #'org-agenda)
@@ -244,10 +263,13 @@ settings
   (global-set-key (kbd "C-c ;") #'comment-line)
   (global-set-key (kbd "C-c C-;") #'comment-region)
 
-  (defun indent-org-block-automatically ()
-    (when (org-in-src-block-p)
-      (org-edit-special)
-      (indent-region (point-min) (point))
-      (org-edit-src-exit)))
-  (run-at-time 1 10 'indent-org-block-automatically)
 #+end_src
+
+
+
+
+
+
+
+
+
