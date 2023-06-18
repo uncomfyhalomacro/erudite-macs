@@ -1,5 +1,54 @@
-(straight-use-package 'ayu-theme)
-(straight-use-package 'catppuccin-theme)
+(straight-use-package 'prescient)
+(straight-use-package 'corfu-prescient)
+(straight-use-package 'company-prescient)
+(straight-use-package 'ivy-prescient)
+(straight-use-package 'selectrum-prescient)
+(straight-use-package 'vertico-prescient)
+
+
+;; Themes
+
+(defun dark-theme-load-mocha ()
+  "Change theme to mocha flavor"
+  (interactive)
+  (setq catppuccin-flavor 'mocha)
+  (catppuccin-reload))
+(defun light-theme-load-latte ()
+  "Change theme to frappe flavor"
+  (interactive)
+  (setq catppuccin-flavor 'latte)
+  (catppuccin-reload))
+(defun system-check-theme-p ()
+  "Check theme based on preferred mode"
+  (if (string= (shell-command-to-string "gsettings get org.gnome.desktop.interface color-scheme") "\'prefer-dark\'\n") t))
+(defun catppuccin/load-theme ()
+  "Load dark/light variant depending on the system theme"
+  ;; Load themes
+  (interactive)
+  (if (system-check-theme-p)
+      (light-theme-load-latte)
+    (dark-theme-load-mocha)))
+
+(use-package catppuccin-theme
+  :custom (catppuccin/load-theme)
+  :config
+  (defun check-current-theme-mode-p ()
+    "Checks between dark and light mode"
+    (if (string= (symbol-name catppuccin-flavor) 'mocha) t))
+  (defun theme-switcheroo-mode ()
+    "Switches between light and dark mode"
+    (interactive)
+    (if (check-current-theme-mode-p)
+	(light-theme-load-latte)
+      (dark-theme-load-mocha)))
+  (global-set-key (kbd "C-x C-\\") 'theme-switcheroo-mode)
+  :init
+  (load-theme 'catppuccin t)
+  (catppuccin/load-theme)
+  :straight `(catppuccin-theme :type git
+			       :host github
+			       :repo "catppuccin/emacs"
+			       :branch "main"))
 (use-package page-break-lines
   :config
   (page-break-lines-mode))
@@ -24,8 +73,7 @@
 (use-package neotree
   :straight t
   :after all-the-icons
-  :init
-  (setq neo-theme (if (display-graphic-p) 'icons 'classic))
+  :init    (setq neo-theme (if (display-graphic-p) 'icons 'classic))
   :config 
   (global-set-key [f8] 'neotree-toggle))
 (use-package toc-org
@@ -41,7 +89,6 @@
 (straight-use-package 'company)
 
 ;; Load packages
-(require 'ayu-theme)
 (require 'elcord)
 (use-package flycheck
   :straight t
@@ -159,11 +206,12 @@
 (global-tree-sitter-mode)
 (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode)
 
-;; Themes
-(load-theme 'catppuccin t)
-(defun indent-org-block-automatically ()
+
+
+
+;; Misc functions
+(defun indent-org-block ()
   (when (org-in-src-block-p)
     (org-edit-special)
     (indent-region (point-min) (point))
     (org-edit-src-exit)))
-(run-at-time 1 10 'indent-org-block-automatically)

@@ -9,7 +9,7 @@
 - [[#summary][Summary]]
 - [[#some-stuff-that-needs-to-be-done-04][Some stuff that needs to be done]]
 - [[#emacs-config][Emacs Config]]
-- [[#starter-settings][Starter settings]]
+n- [[#starter-settings][Starter settings]]
 - [[#main-configurations][Main configurations]]
 
 * Summary
@@ -17,7 +17,7 @@
   and somewhat not to your liking. I am configuring this config for note-taking,
   journaling, and coding for haskell, julia, and rust. When done editing the config, do =C-c C-v t= to tangle.
 
-* TODO Some stuff that needs to be done [1/4]
+* TODO Some stuff that needs to be done [1/5]
   - [ ] User-defined keymaps, soon™️
   - [X] Julia-repl is chosen.
   - [ ] Split-up .el files
@@ -32,45 +32,48 @@
   
 #+begin_src elisp :tangle init.el
   (setq inhibit-startup-message t)
-  (set-face-attribute 'default nil :font "JuliaMono 10")
-  (set-fontset-font t nil "Symbols Nerd Font" nil 'append)
-  (set-fontset-font t nil "Noto Sans Symbols" nil 'append)
-  (set-fontset-font t nil "Noto Sans Symbols2" nil 'append)
-  (set-fontset-font t nil "Noto Sans CJK SC" nil 'append)
-  (set-fontset-font t nil "Noto Sans CJK TC" nil 'append)
-  (set-fontset-font t nil "Noto Sans CJK KR" nil 'append)
-  (set-fontset-font t nil "Noto Sans CJK JP" nil 'append)
-  (set-fontset-font t nil "Noto Sans CJK HK" nil 'append)
-  (set-fontset-font t nil "Noto Color Emoji" nil 'append)
-  (global-display-line-numbers-mode 'relative)
-  (setq display-line-numbers-type 'relative)
 
-  (setq next-line-add-newlines t)
+  (when (display-graphic-p)
+      (set-face-attribute 'default nil :font "JuliaMono 10")
+      (set-fontset-font t nil "Symbols Nerd Font" nil 'append)
+      (set-fontset-font t nil "Noto Sans Symbols" nil 'append)
+      (set-fontset-font t nil "Noto Sans Symbols2" nil 'append)
+      (set-fontset-font t nil "Noto Sans CJK SC" nil 'append)
+      (set-fontset-font t nil "Noto Sans CJK TC" nil 'append)
+      (set-fontset-font t nil "Noto Sans CJK KR" nil 'append)
+      (set-fontset-font t nil "Noto Sans CJK JP" nil 'append)
+      (set-fontset-font t nil "Noto Sans CJK HK" nil 'append)
+      (set-fontset-font t nil "Noto Color Emoji" nil 'append))
 
-  (xterm-mouse-mode t)
+    (global-display-line-numbers-mode 'relative)
+    (setq display-line-numbers-type 'relative)
 
-  (menu-bar-mode -1)
+    (setq next-line-add-newlines t)
 
-  (setq visible-bell t)
+    (xterm-mouse-mode t)
 
-  ;; Use straight.el bootstrap script
+    (menu-bar-mode -1)
 
-  (defvar bootstrap-version)
-  (let ((bootstrap-file
-	 (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-	(bootstrap-version 5))
-    (unless (file-exists-p bootstrap-file)
-      (with-current-buffer
-	  (url-retrieve-synchronously "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-				      'silent 'inhibit-cookies)
-	(goto-char (point-max))
-	(eval-print-last-sexp)))
-    (load bootstrap-file nil 'nomessage))
-  ;; Integrate straight with use-package
-  (straight-use-package 'use-package)
-  (setq straight-use-package-by-default t)
-  (load-file "~/.config/emacs/config.el")
-  (load-file "~/.config/emacs/keymaps.el")
+    (setq visible-bell t)
+
+    ;; Use straight.el bootstrap script
+
+    (defvar bootstrap-version)
+    (let ((bootstrap-file
+	   (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+	  (bootstrap-version 5))
+      (unless (file-exists-p bootstrap-file)
+	(with-current-buffer
+	    (url-retrieve-synchronously "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+					'silent 'inhibit-cookies)
+	  (goto-char (point-max))
+	  (eval-print-last-sexp)))
+      (load bootstrap-file nil 'nomessage))
+    ;; Integrate straight with use-package
+    (straight-use-package 'use-package)
+    (setq straight-use-package-by-default t)
+    (load-file "~/.config/emacs/config.el")
+    (load-file "~/.config/emacs/keymaps.el")
 #+end_src
 
 * Main configurations
@@ -79,8 +82,57 @@
   from the previous configuration. I will be splitting these up one day but not now.
 
 #+begin_src elisp :tangle config.el
-  (straight-use-package 'ayu-theme)
-  (straight-use-package 'catppuccin-theme)
+  (straight-use-package 'prescient)
+  (straight-use-package 'corfu-prescient)
+  (straight-use-package 'company-prescient)
+  (straight-use-package 'ivy-prescient)
+  (straight-use-package 'selectrum-prescient)
+  (straight-use-package 'vertico-prescient)
+
+
+  ;; Themes
+
+  (defun dark-theme-load-mocha ()
+    "Change theme to mocha flavor"
+    (interactive)
+    (setq catppuccin-flavor 'mocha)
+    (catppuccin-reload))
+  (defun light-theme-load-latte ()
+    "Change theme to frappe flavor"
+    (interactive)
+    (setq catppuccin-flavor 'latte)
+    (catppuccin-reload))
+  (defun system-check-theme-p ()
+    "Check theme based on preferred mode"
+    (if (string= (shell-command-to-string "gsettings get org.gnome.desktop.interface color-scheme") "\'prefer-dark\'\n") t))
+  (defun catppuccin/load-theme ()
+    "Load dark/light variant depending on the system theme"
+    ;; Load themes
+    (interactive)
+    (if (system-check-theme-p)
+	(light-theme-load-latte)
+      (dark-theme-load-mocha)))
+
+  (use-package catppuccin-theme
+    :custom (catppuccin/load-theme)
+    :config
+    (defun check-current-theme-mode-p ()
+      "Checks between dark and light mode"
+      (if (string= (symbol-name catppuccin-flavor) 'mocha) t))
+    (defun theme-switcheroo-mode ()
+      "Switches between light and dark mode"
+      (interactive)
+      (if (check-current-theme-mode-p)
+	  (light-theme-load-latte)
+	(dark-theme-load-mocha)))
+    (global-set-key (kbd "C-x C-\\") 'theme-switcheroo-mode)
+    :init
+    (load-theme 'catppuccin t)
+    (catppuccin/load-theme)
+    :straight `(catppuccin-theme :type git
+				 :host github
+				 :repo "catppuccin/emacs"
+				 :branch "main"))
   (use-package page-break-lines
     :config
     (page-break-lines-mode))
@@ -105,8 +157,7 @@
   (use-package neotree
     :straight t
     :after all-the-icons
-    :init
-    (setq neo-theme (if (display-graphic-p) 'icons 'classic))
+    :init    (setq neo-theme (if (display-graphic-p) 'icons 'classic))
     :config 
     (global-set-key [f8] 'neotree-toggle))
   (use-package toc-org
@@ -122,7 +173,6 @@
   (straight-use-package 'company)
 
   ;; Load packages
-  (require 'ayu-theme)
   (require 'elcord)
   (use-package flycheck
     :straight t
@@ -240,36 +290,33 @@
   (global-tree-sitter-mode)
   (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode)
 
-  ;; Themes
-  (load-theme 'catppuccin t)
-  (defun indent-org-block-automatically ()
+
+
+
+  ;; Misc functions
+  (defun indent-org-block ()
     (when (org-in-src-block-p)
       (org-edit-special)
       (indent-region (point-min) (point))
       (org-edit-src-exit)))
-  (run-at-time 1 10 'indent-org-block-automatically)
 
 #+end_src
 
 ** Keymappings
 
 #+begin_src elisp :tangle keymaps.el
+
   ;; User defined keymaps
-  ;;;; Org-Mode
 
-  (global-set-key (kbd "C-c l") #'org-store-link)
-  (global-set-key (kbd "C-c a") #'org-agenda)
-  (global-set-key (kbd "C-c c") #'org-capture)
-  (global-set-key (kbd "C-c ;") #'comment-line)
-  (global-set-key (kbd "C-c C-;") #'comment-region)
+    ;;;; Org-Mode
 
+  (global-set-key (kbd "C-c l") 'org-store-link)
+  (global-set-key (kbd "C-c a") 'org-agenda)
+  (global-set-key (kbd "C-c c") 'org-capture)
+  (global-set-key (kbd "C-c ;") 'comment-line)
+  (global-set-key (kbd "C-c C-;") 'comment-region)
+  (global-set-key (kbd "C-c i") 'indent-org-block)
+  
 #+end_src
-
-
-
-
-
-
-
 
 
