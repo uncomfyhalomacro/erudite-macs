@@ -20,14 +20,16 @@
   (catppuccin-reload))
 (defun system-check-theme-p ()
   "Check theme based on preferred mode"
-  (if (string= (shell-command-to-string "gsettings get org.gnome.desktop.interface color-scheme") "\'prefer-dark\'\n") t))
+  (if (string= (getenv "CONTAINER_ID") "")
+      (if (string= (shell-command-to-string "gsettings get org.gnome.desktop.interface color-scheme") "\'prefer-dark\'\n") t)
+      (if (string= (shell-command-to-string "distrobox-host-exec gsettings get org.gnome.desktop.interface color-scheme") "\'prefer-dark\'\n") t)))
 (defun catppuccin/load-theme ()
   "Load dark/light variant depending on the system theme"
   ;; Load themes
   (interactive)
   (if (system-check-theme-p)
-      (light-theme-load-latte)
-    (dark-theme-load-mocha)))
+      (dark-theme-load-mocha)
+      (light-theme-load-latte)))
 
 (use-package catppuccin-theme
   :custom (catppuccin/load-theme)

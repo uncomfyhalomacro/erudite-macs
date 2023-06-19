@@ -39,5 +39,6 @@
   ;; Integrate straight with use-package
   (straight-use-package 'use-package)
   (setq straight-use-package-by-default t)
-  (load-file "~/.config/emacs/config.el")
-  (load-file "~/.config/emacs/keymaps.el")
+
+  ;; Load configs
+  (load-file "~/.config/emacs/load.el")

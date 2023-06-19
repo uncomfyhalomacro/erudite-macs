@@ -3,26 +3,17 @@
 #+ATTR_ORG: :radio t
 #+AUTO_TANGLE: t
 
-<2023-06-15 Thu 19:06>
-
 * Table of Contents :TOC:
 - [[#summary][Summary]]
 - [[#some-stuff-that-needs-to-be-done-04][Some stuff that needs to be done]]
 - [[#emacs-config][Emacs Config]]
-n- [[#starter-settings][Starter settings]]
+- [[#starter-settings][Starter settings]]
 - [[#main-configurations][Main configurations]]
 
 * Summary
   I am currently learning how to use emacs so this config might be messy
   and somewhat not to your liking. I am configuring this config for note-taking,
   journaling, and coding for haskell, julia, and rust. When done editing the config, do =C-c C-v t= to tangle.
-
-* TODO Some stuff that needs to be done [1/5]
-  - [ ] User-defined keymaps, soon™️
-  - [X] Julia-repl is chosen.
-  - [ ] Split-up .el files
-  - [ ] Setup org mode for note-taking
-  - [X] Auto-format code blocks
 
 * Emacs Config
   These are the configuration code in elisp for my emacs config.
@@ -72,6 +63,15 @@ n- [[#starter-settings][Starter settings]]
     ;; Integrate straight with use-package
     (straight-use-package 'use-package)
     (setq straight-use-package-by-default t)
+  
+    ;; Load configs
+    (load-file "~/.config/emacs/load.el")
+
+#+end_src
+
+** Load configs
+
+#+begin_src elisp :tangle load.el
     (load-file "~/.config/emacs/config.el")
     (load-file "~/.config/emacs/keymaps.el")
 #+end_src
@@ -104,14 +104,16 @@ n- [[#starter-settings][Starter settings]]
     (catppuccin-reload))
   (defun system-check-theme-p ()
     "Check theme based on preferred mode"
-    (if (string= (shell-command-to-string "gsettings get org.gnome.desktop.interface color-scheme") "\'prefer-dark\'\n") t))
+    (if (string= (getenv "CONTAINER_ID") "")
+	(if (string= (shell-command-to-string "gsettings get org.gnome.desktop.interface color-scheme") "\'prefer-dark\'\n") t)
+	(if (string= (shell-command-to-string "distrobox-host-exec gsettings get org.gnome.desktop.interface color-scheme") "\'prefer-dark\'\n") t)))
   (defun catppuccin/load-theme ()
     "Load dark/light variant depending on the system theme"
     ;; Load themes
     (interactive)
     (if (system-check-theme-p)
-	(light-theme-load-latte)
-      (dark-theme-load-mocha)))
+	(dark-theme-load-mocha)
+	(light-theme-load-latte)))
 
   (use-package catppuccin-theme
     :custom (catppuccin/load-theme)
