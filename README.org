@@ -3,6 +3,8 @@
 #+ATTR_ORG: :radio t
 #+AUTO_TANGLE: t
 
+* NOTICE: Moved to [[https://codeberg.org/uncomfyhalomacro/erudite-macs][Codeberg]]
+
 * Table of Contents :TOC:
 - [[#summary][Summary]]
 - [[#some-stuff-that-needs-to-be-done-04][Some stuff that needs to be done]]
